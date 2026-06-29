@@ -1,0 +1,66 @@
+services:
+  ansible-controller:
+    image: ubuntu:22.04
+    container_name: ansible_controller
+    volumes:
+      - ./ansible:/ansible
+    tty: true
+    stdin_open: true
+    networks:
+      - ansible-net
+    command: >
+      bash -c "
+      apt-get update && 
+      DEBIAN_FRONTEND=noninteractive apt-get install -y ansible openssh-client python3 vim && 
+      apt-get clean && 
+      rm -rf /var/lib/apt/lists/* && 
+      tail -f /dev/null"
+
+  target-ubuntu1:
+    image: ubuntu:22.04
+    container_name: target_ubuntu1
+    networks:
+      - ansible-net
+    expose:
+      - "22"
+    command: >
+      sh -c "apt-get update && apt-get install -y openssh-server python3 && 
+             mkdir -p /var/run/sshd && 
+             echo 'root:rootpassword' | chpasswd && 
+             sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && 
+             sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && 
+             /usr/sbin/sshd -D"
+  target-ubuntu2:
+    image: ubuntu:22.04
+    container_name: target_ubuntu2
+    networks:
+      - ansible-net
+    expose:
+      - "22"
+    command: >
+      sh -c "apt-get update && apt-get install -y openssh-server python3 && 
+             mkdir -p /var/run/sshd && 
+             echo 'root:rootpassword' | chpasswd && 
+             sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && 
+             sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && 
+             /usr/sbin/sshd -D"
+  target-ubuntu3:
+    image: ubuntu:22.04
+    container_name: target_ubuntu3
+    networks:
+      - ansible-net
+    expose:
+      - "22"
+    command: >
+      sh -c "apt-get update && apt-get install -y openssh-server python3 && 
+             mkdir -p /var/run/sshd && 
+             echo 'root:rootpassword' | chpasswd && 
+             sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && 
+             sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && 
+             /usr/sbin/sshd -D"
+
+  
+
+networks:
+  ansible-net:
+    driver: bridge

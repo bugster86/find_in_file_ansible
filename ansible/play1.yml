@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: uso il modulo custom
+      my_test:
+        name: "{{ valore | default('fail me') }}"
+        new: yes

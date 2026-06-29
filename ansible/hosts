@@ -1,0 +1,4 @@
+[targets]
+target_ubuntu1 ansible_user=root
+target_ubuntu2 ansible_user=root
+target_ubuntu3 ansible_user=root
