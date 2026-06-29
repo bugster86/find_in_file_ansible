@@ -5,5 +5,5 @@
   tasks:
     - name: uso il modulo custom
       my_test:
-        name: "{{ valore | default('fail me') }}"
-        new: yes
+        file: '/etc/hosts'
+        stringa: 'ip6'
