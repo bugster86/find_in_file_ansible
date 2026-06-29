@@ -7,3 +7,9 @@
       my_test:
         file: '/etc/hosts'
         stringa: 'ip6'
+      notify: stampa_trovato
+
+  handlers:
+    - name: stampa_trovato
+      debug: 
+        msg: "La stringa esiste nel file" 
